@@ -1,8 +1,106 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="main.java.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <StackPane prefHeight="168.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Directory:" StackPane.alignment="TOP_LEFT">
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="File mask:" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="5.0" top="46.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Search text:" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets bottom="1.0" left="5.0" top="86.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets left="90.0" right="6.0" top="45.0" />
+               </StackPane.margin>
+            </TextField>
+            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets left="90.0" right="6.0" top="85.0" />
+               </StackPane.margin>
+            </TextField>
+            <Button minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="29.0" text="Button" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="6.0" top="5.0" />
+               </StackPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
+               <StackPane.margin>
+                  <Insets bottom="13.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets left="90.0" right="40.0" top="5.0" />
+               </StackPane.margin>
+            </TextField>
+         </children>
+      </StackPane>
+   </top>
+   <left>
+      <TreeView prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+         </top>
+         <bottom>
+            <BorderPane prefHeight="46.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+               <left>
+                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Left" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="20.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </left>
+               <center>
+                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select all" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Rigth" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets right="2.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets right="20.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </right>
+            </BorderPane>
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>
