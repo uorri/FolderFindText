@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <top>
       <StackPane prefHeight="168.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,22 +38,23 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+            <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets left="90.0" right="6.0" top="45.0" />
                </StackPane.margin>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </TextField>
-            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+            <TextField fx:id="searchText_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets left="90.0" right="6.0" top="85.0" />
                </StackPane.margin>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </TextField>
-            <Button minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="29.0" text="Button" StackPane.alignment="TOP_RIGHT">
-               <StackPane.margin>
-                  <Insets right="6.0" top="5.0" />
-               </StackPane.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
+            <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
                <StackPane.margin>
                   <Insets bottom="13.0" />
                </StackPane.margin>
@@ -61,21 +62,29 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" StackPane.alignment="TOP_RIGHT">
+            <Button minHeight="-Infinity" mnemonicParsing="false" onAction="#openFolder" prefHeight="25.0" prefWidth="29.0" text="Button" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="6.0" top="5.0" />
+               </StackPane.margin>
+            </Button>
+            <TextField fx:id="filePath_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets left="90.0" right="40.0" top="5.0" />
                </StackPane.margin>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </TextField>
          </children>
       </StackPane>
    </top>
    <left>
-      <TreeView prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="fileTree" prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
          </top>
          <bottom>
             <BorderPane prefHeight="46.0" prefWidth="400.0" BorderPane.alignment="CENTER">
