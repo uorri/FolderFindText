@@ -1,6 +1,6 @@
-package main.model;
+package main.java.model;
 
-import java.awt.*;
+import javafx.scene.control.TextField;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
