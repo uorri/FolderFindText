@@ -5,35 +5,32 @@ import javafx.scene.control.TreeView;
 import main.java.model.InputValidator;
 
 import java.io.File;
+import java.util.ArrayList;
 
 class TreeController {
     private TreeItem<String> root;
-    private File[] folderEntries;
 
     TreeController(InputValidator inputValidator, TreeView<String> fileTree) {
         root = new TreeItem<>(inputValidator.getFolder().getName());
         fileTree.setRoot(root);
-        folderEntries = inputValidator.getFolder().listFiles();
     }
 
-    void findFilesInFolder(){
-        findUsingRecursion(root, folderEntries);
-    }
-
-    private void findUsingRecursion(TreeItem<String> root, File[] folderEntries){
-        for (File entry : folderEntries){
-            TreeItem<String> item = new TreeItem<>(entry.getName());
-            if (entry.isDirectory()){
-                File[] files = entry.listFiles();
-                if (files != null && files.length != 0) {
-                    root.getChildren().add(item);
-                    findUsingRecursion(item, files);
-                }
-            }
-            else
-                root.getChildren().add(item);
+    void findFilesInFolder(ArrayList<File> files) {
+        //files.forEach(this::addFile);
+        for (File file : files) {
+            TreeItem<String> item = new TreeItem<>(file.getName());
+            findFilesInFolderWithRecursion(item, file);
         }
     }
 
+    private void findFilesInFolderWithRecursion(TreeItem<String> current, File file) {
+        TreeItem<String> parent = new TreeItem<>(file.getParentFile().getName());
+        parent.getChildren().add(current);
+        if (root.toString().equals(parent.toString())) {
+            root.getChildren().add(current);
+        } else {
+            findFilesInFolderWithRecursion(parent, file.getParentFile());
+        }
+    }
 
 }
