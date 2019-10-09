@@ -1,8 +1,6 @@
 package main.java.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
@@ -13,20 +11,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
+import java.util.HashMap;
 
 import static java.lang.Thread.MAX_PRIORITY;
 
 public class Controller {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
 
     @FXML
     private TextField fileMask_field;
@@ -49,16 +39,17 @@ public class Controller {
     @FXML
     private Button selectNextButton;
 
-    @FXML Button selectAllButton;
+    @FXML
+    Button selectAllButton;
 
     private TreeController treeController;
 
-   private TextArea textArea;
+    private TextArea textArea;
 
     private SearchManager sm;
     private InputValidator inputValidator;
     private File currentFile;
-
+    private HashMap<String, File> openedFiles = new HashMap<>();
 
 
     @FXML
@@ -97,7 +88,6 @@ public class Controller {
         treeController.findFilesInFolder(files);
 
 
-
     }
 
     @FXML
@@ -106,7 +96,8 @@ public class Controller {
             TreeItem<String> item = fileTree.getSelectionModel().getSelectedItem();
             currentFile = treeController.getFile(item);
             if (currentFile.isFile()) {
-
+                openedFiles.put(currentFile.getName(), currentFile);
+                System.out.println(currentFile.getAbsoluteFile());
                 final Tab tab = new Tab(item.getValue());
                 textArea = new TextArea();
                 try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
@@ -133,39 +124,42 @@ public class Controller {
     }
 
     @FXML
-    public void selectPrev(){
-        textArea.positionCaret(10);
-        /*LinkedList li = sm.getEntries(currentFile);
-        System.out.println(li);*/
+    public void mouseClickTab(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 1) {
+            Tab selected = tabPane.getSelectionModel().getSelectedItem();
+            currentFile = openedFiles.get(selected.getText());
+            System.out.println(currentFile.getAbsoluteFile());
+        }
     }
-
-    /*
-    public void selectNext2(){
-        LinkedList li = sm.getEntries(currentFile);
-        int i = (int) li.getFirst();
-        textArea.positionCaret(i);
-
-        System.out.println(li);
-    }
-    */
 
     @FXML
-    public void selectNext(){
+    public void selectPrev() {
         int currentIndex = textArea.getCaretPosition();
         ArrayList<Integer> list = sm.getEntries2(currentFile);
-
-        for (Integer index: list){
-            if (index-3 > currentIndex){
-                int i = index - 3;
-                textArea.positionCaret(i);
-                System.out.println("I set: " + i);
+        for (Integer index : list) {
+            int infelicity = index - 3;
+            if (infelicity < currentIndex) {
+                textArea.positionCaret(infelicity);
+                System.out.println("I set: " + infelicity);
                 break;
             }
         }
     }
 
+    @FXML
+    public void selectNext() {
+        int currentIndex = textArea.getCaretPosition();
+        ArrayList<Integer> list = sm.getEntries2(currentFile);
 
-
+        for (Integer index : list) {
+            int infelicity = index - 3;
+            if (infelicity > currentIndex) {
+                textArea.positionCaret(infelicity);
+                System.out.println("I set: " + infelicity);
+                break;
+            }
+        }
+    }
 
 
 }
