@@ -1,6 +1,6 @@
-package main.java.util;
+package util;
 
-import main.java.model.InputValidator;
+import model.InputValidator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,8 +46,6 @@ public class SearchManager {
 
                         while (!(j == -1)) {
                             arrayList.add(j);
-
-                            System.out.println(j);
                             j = everything.indexOf(inputValidator.getSearchText(), j + 1);
                         }
                         newMap.put(file, arrayList);
@@ -57,8 +55,6 @@ public class SearchManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                System.out.println("Not found");
             }
 
         } else {
@@ -67,7 +63,7 @@ public class SearchManager {
                 for (File file1 : folderEntries) {
                     search(file1);
                 }
-            } else System.out.println("Not found");
+            }
         }
         return requiredFiles;
 

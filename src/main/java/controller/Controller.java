@@ -1,11 +1,11 @@
-package main.java.controller;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
-import main.java.model.InputValidator;
-import main.java.util.SearchManager;
+import model.InputValidator;
+import util.SearchManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,8 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static java.lang.Thread.MAX_PRIORITY;
+import java.util.logging.Logger;
 
 public class Controller {
 
@@ -43,19 +42,13 @@ public class Controller {
     Button selectAllButton;
 
     private TreeController treeController;
-
     private TextArea textArea;
-
     private SearchManager sm;
-    private InputValidator inputValidator;
     private File currentFile;
     private HashMap<String, File> openedFiles = new HashMap<>();
-
-
-    @FXML
-    void initialize() {
-        Thread.currentThread().setPriority(MAX_PRIORITY);
-    }
+    private HashMap<Tab, TextArea> openedTextArea = new HashMap<>();
+    private static Logger log = Logger.getLogger(Controller.class.getName());
+    private InputValidator inputValidator;
 
 
     @FXML
@@ -77,48 +70,56 @@ public class Controller {
             inputValidator.setFileMask(fileMask_field);
             inputValidator.setSearchText(searchText_field);
             inputValidator.setFolder(filePath_field);
+            treeController = new TreeController(inputValidator, fileTree);
+            sm = new SearchManager(inputValidator);
+            ArrayList<File> files = sm.search(inputValidator.getFolder());
+            treeController.findFilesInFolder(files);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e.getMessage());
         }
 
-        treeController = new TreeController(inputValidator, fileTree);
-        sm = new SearchManager(inputValidator);
 
-        ArrayList<File> files = sm.search(inputValidator.getFolder());
-        treeController.findFilesInFolder(files);
 
 
     }
 
     @FXML
-    public void mouseClick(MouseEvent mouseEvent) throws IOException {
+    public void mouseClick(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             TreeItem<String> item = fileTree.getSelectionModel().getSelectedItem();
-            currentFile = treeController.getFile(item);
-            if (currentFile.isFile()) {
-                openedFiles.put(currentFile.getName(), currentFile);
-                System.out.println(currentFile.getAbsoluteFile());
-                final Tab tab = new Tab(item.getValue());
-                textArea = new TextArea();
-                try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
-                    StringBuilder sb = new StringBuilder();
-                    String line = br.readLine();
+            if (item != null) {
+                if (!item.getValue().equals(inputValidator.getFolder().getName())) {
+                    currentFile = treeController.getFile(item);
+                    if (currentFile.isFile()) {
+                        openedFiles.put(currentFile.getName(), currentFile);
+                        System.out.println(currentFile.getAbsoluteFile());
+                        final Tab tab = new Tab(item.getValue());
+                        textArea = new TextArea();
 
-                    while (line != null) {
-                        sb.append(line);
-                        sb.append(System.lineSeparator());
-                        line = br.readLine();
+                        try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
+                            StringBuilder sb = new StringBuilder();
+                            String line = br.readLine();
+
+                            while (line != null) {
+                                sb.append(line);
+                                sb.append(System.lineSeparator());
+                                line = br.readLine();
+                            }
+                            String everything = sb.toString();
+                            textArea.appendText(everything);
+                        } catch (IOException io) {
+                            log.info("Unable to read file");
+                        }
+
+                        tab.setContent(textArea);
+                        openedTextArea.put(tab, textArea);
+                        tabPane.getTabs().add(tab);
+                        tabPane.getSelectionModel().select(tab);
+                        TabController tabController = new TabController();
+                        tabController.disableButtons(selectPrevButton, selectNextButton, selectAllButton);
+
                     }
-                    String everything = sb.toString();
-                    textArea.appendText(everything);
                 }
-
-                tab.setContent(textArea);
-                tabPane.getTabs().add(tab);
-                tabPane.getSelectionModel().select(tab);
-                TabController tabController = new TabController();
-                tabController.disableButtons(selectPrevButton, selectNextButton, selectAllButton);
-
             }
         }
     }
@@ -127,8 +128,12 @@ public class Controller {
     public void mouseClickTab(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 1) {
             Tab selected = tabPane.getSelectionModel().getSelectedItem();
-            currentFile = openedFiles.get(selected.getText());
-            System.out.println(currentFile.getAbsoluteFile());
+            if (selected != null) {
+                textArea = openedTextArea.get(selected);
+                currentFile = openedFiles.get(selected.getText());
+                System.out.println(currentFile.getAbsoluteFile());
+            }
+
         }
     }
 
@@ -148,9 +153,9 @@ public class Controller {
 
     @FXML
     public void selectNext() {
+
         int currentIndex = textArea.getCaretPosition();
         ArrayList<Integer> list = sm.getEntries2(currentFile);
-
         for (Integer index : list) {
             int infelicity = index - 3;
             if (infelicity > currentIndex) {
@@ -159,6 +164,11 @@ public class Controller {
                 break;
             }
         }
+    }
+
+    @FXML
+    public void selectAll() {
+        textArea.selectAll();
     }
 
 

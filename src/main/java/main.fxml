@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <top>
       <StackPane prefHeight="168.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,7 +38,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+            <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" text="log" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets left="90.0" right="6.0" top="45.0" />
                </StackPane.margin>
@@ -54,7 +54,7 @@
                   <Font size="11.0" />
                </font>
             </TextField>
-            <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
+            <Button mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
                <StackPane.margin>
                   <Insets bottom="13.0" />
                </StackPane.margin>
@@ -79,27 +79,27 @@
       </StackPane>
    </top>
    <left>
-      <TreeView fx:id="fileTree" prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="fileTree"  onMouseClicked="#mouseClick" prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+            <TabPane fx:id="tabPane" onMouseClicked="#mouseClickTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
          </top>
          <bottom>
             <BorderPane prefHeight="46.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <left>
-                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Left" BorderPane.alignment="CENTER">
+                  <Button fx:id="selectPrevButton" focusTraversable="false" disable="true" onAction="#selectPrev" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select prev" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="20.0" />
                      </BorderPane.margin>
                   </Button>
                </left>
                <center>
-                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select all" BorderPane.alignment="CENTER" />
+                  <Button fx:id="selectAllButton" focusTraversable="false" disable="true" onAction="#selectAll" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select all" BorderPane.alignment="CENTER" />
                </center>
                <right>
-                  <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Rigth" BorderPane.alignment="CENTER">
+                  <Button fx:id="selectNextButton" focusTraversable="false" disable="true" onAction="#selectNext" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select next" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets right="2.0" />
                      </padding>

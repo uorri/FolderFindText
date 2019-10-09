@@ -1,8 +1,9 @@
-package main.java.controller;
+package controller;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import main.java.model.InputValidator;
+import model.InputValidator;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ class TreeController {
     private TreeItem<String> root;
     private Map<TreeItem<String>, File> files = new HashMap<>();
 
+
     TreeController(InputValidator inputValidator, TreeView<String> fileTree) {
         root = new TreeItem<>(inputValidator.getFolder().getName());
         fileTree.setRoot(root);
     }
-
 
     void findFilesInFolder(ArrayList<File> files) {
         //files.forEach(this::addFile);
@@ -36,15 +37,10 @@ class TreeController {
         } else {
             findFilesInFolderWithRecursion(parent, file.getParentFile());
         }
-        for (Map.Entry entry: files.entrySet()) {
-            System.out.println(entry);
-
-        }
     }
 
     File getFile(TreeItem<String> item) {
         return files.get(item);
-
     }
 
 
