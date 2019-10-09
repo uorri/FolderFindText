@@ -8,12 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SearchManager {
     private InputValidator inputValidator;
     private ArrayList<File> requiredFiles;
-    private ConcurrentHashMap<File, Integer[]> indexLine = new ConcurrentHashMap<>();
     private HashMap<File, ArrayList<Integer>> newMap = new HashMap<>();
     private HashMap<File, String> mapMap = new HashMap<>();
 
@@ -44,13 +42,13 @@ public class SearchManager {
                         ArrayList<Integer> arrayList = new ArrayList<>();
                         int i = everything.indexOf(inputValidator.getSearchText());
                         arrayList.add(i);
-                        int j = everything.indexOf(inputValidator.getSearchText(), i+1);
+                        int j = everything.indexOf(inputValidator.getSearchText(), i + 1);
 
                         while (!(j == -1)) {
                             arrayList.add(j);
 
                             System.out.println(j);
-                            j = everything.indexOf(inputValidator.getSearchText(), j+1);
+                            j = everything.indexOf(inputValidator.getSearchText(), j + 1);
                         }
                         newMap.put(file, arrayList);
 
@@ -77,9 +75,5 @@ public class SearchManager {
 
     public ArrayList<Integer> getEntries2(File file) {
         return newMap.get(file);
-    }
-
-    public String getText(File file){
-        return mapMap.get(file);
     }
 }
