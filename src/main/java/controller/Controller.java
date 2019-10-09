@@ -77,10 +77,6 @@ public class Controller {
         } catch (IOException e) {
             log.info(e.getMessage());
         }
-
-
-
-
     }
 
     @FXML
@@ -133,7 +129,6 @@ public class Controller {
                 currentFile = openedFiles.get(selected.getText());
                 System.out.println(currentFile.getAbsoluteFile());
             }
-
         }
     }
 
@@ -146,14 +141,12 @@ public class Controller {
             if (infelicity < currentIndex) {
                 textArea.positionCaret(infelicity);
                 System.out.println("I set: " + infelicity);
-                break;
             }
         }
     }
 
     @FXML
     public void selectNext() {
-
         int currentIndex = textArea.getCaretPosition();
         ArrayList<Integer> list = sm.getEntries2(currentFile);
         for (Integer index : list) {
