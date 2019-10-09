@@ -1,6 +1,5 @@
 package main.java.controller;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import main.java.model.InputValidator;
