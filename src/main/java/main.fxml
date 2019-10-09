@@ -79,27 +79,27 @@
       </StackPane>
    </top>
    <left>
-      <TreeView fx:id="fileTree"  onMouseClicked="#mouseClick" prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="fileTree" onMouseClicked="#mouseClick" prefHeight="449.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TabPane fx:id="tabPane" onMouseClicked="#mouseClickTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+            <TabPane fx:id="tabPane" onMouseClicked="#mouseClickTab" prefHeight="386.0" prefWidth="400.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
          </top>
          <bottom>
             <BorderPane prefHeight="46.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <left>
-                  <Button fx:id="selectPrevButton" focusTraversable="false" disable="true" onAction="#selectPrev" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select prev" BorderPane.alignment="CENTER">
+                  <Button fx:id="selectPrevButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectPrev" prefHeight="26.0" prefWidth="98.0" text="Select prev" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="20.0" />
                      </BorderPane.margin>
                   </Button>
                </left>
                <center>
-                  <Button fx:id="selectAllButton" focusTraversable="false" disable="true" onAction="#selectAll" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select all" BorderPane.alignment="CENTER" />
+                  <Button fx:id="selectAllButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectAll" prefHeight="26.0" prefWidth="106.0" text="Select all" BorderPane.alignment="CENTER" />
                </center>
                <right>
-                  <Button fx:id="selectNextButton" focusTraversable="false" disable="true" onAction="#selectNext" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Select next" BorderPane.alignment="CENTER">
+                  <Button fx:id="selectNextButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectNext" prefHeight="26.0" prefWidth="97.0" text="Select next" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets right="2.0" />
                      </padding>
