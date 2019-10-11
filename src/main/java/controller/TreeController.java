@@ -4,44 +4,40 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import model.InputValidator;
 
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 class TreeController {
-    private TreeItem<String> root;
     private Map<TreeItem<String>, File> files = new HashMap<>();
+    private Map<File, TreeItem<String>> folders = new HashMap<>();
 
 
     TreeController(InputValidator inputValidator, TreeView<String> fileTree) {
-        root = new TreeItem<>(inputValidator.getFolder().getName());
+        TreeItem<String> root = new TreeItem<>(inputValidator.getFolder().getName());
         fileTree.setRoot(root);
+        folders.put(inputValidator.getFolder(), fileTree.getRoot());
     }
 
-    void findFilesInFolder(ArrayList<File> files) {
-        //files.forEach(this::addFile);
-        for (File file : files) {
-            TreeItem<String> item = new TreeItem<>(file.getName());
-            findFilesInFolderWithRecursion(item, file);
+    void createTree(File file, TreeItem<String> childItem){
+        TreeItem<String> currentItem = new TreeItem<>(file.getName());
+        TreeItem<String> parentItem;
+        File parentFile = file.getParentFile();
+        if (childItem != null){
+            currentItem.getChildren().add(childItem);
         }
-    }
-
-    private void findFilesInFolderWithRecursion(TreeItem<String> current, File file) {
-        TreeItem<String> parent = new TreeItem<>(file.getParentFile().getName());
-        parent.getChildren().add(current);
-        files.put(current, file);
-        if (root.toString().equals(parent.toString())) {
-            root.getChildren().add(current);
+        if (folders.containsKey(parentFile)){
+            parentItem = folders.get(parentFile);
+            parentItem.getChildren().add(currentItem);
         } else {
-            findFilesInFolderWithRecursion(parent, file.getParentFile());
+            createTree(parentFile, currentItem);
         }
+        if (file.isFile()) files.put(currentItem, file);
+        else folders.put(file, currentItem);
     }
 
     File getFile(TreeItem<String> item) {
         return files.get(item);
     }
-
-
 }
+
