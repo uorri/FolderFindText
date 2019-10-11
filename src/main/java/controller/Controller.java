@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Controller {
@@ -45,8 +46,8 @@ public class Controller {
     private TextArea textArea;
     private SearchManager sm;
     private File currentFile;
-    private HashMap<String, File> openedFiles = new HashMap<>();
-    private HashMap<Tab, TextArea> openedTextArea = new HashMap<>();
+    private Map<String, File> openedFiles = new HashMap<>();
+    private Map<Tab, TextArea> openedTextArea = new HashMap<>();
     private static Logger log = Logger.getLogger(Controller.class.getName());
     private InputValidator inputValidator;
 
@@ -73,7 +74,7 @@ public class Controller {
             treeController = new TreeController(inputValidator, fileTree);
             sm = new SearchManager(inputValidator);
             ArrayList<File> files = sm.search(inputValidator.getFolder());
-            treeController.findFilesInFolder(files);
+            files.forEach(file -> treeController.createTree(file, null));
         } catch (IOException e) {
             log.info(e.getMessage());
         }
@@ -86,9 +87,9 @@ public class Controller {
             if (item != null) {
                 if (!item.getValue().equals(inputValidator.getFolder().getName())) {
                     currentFile = treeController.getFile(item);
-                    if (currentFile.isFile()) {
+                    if (currentFile != null && currentFile.isFile()) {
                         openedFiles.put(currentFile.getName(), currentFile);
-                        System.out.println(currentFile.getAbsoluteFile());
+                        log.info("File: " + currentFile.getAbsoluteFile() + " was opened.");
                         final Tab tab = new Tab(item.getValue());
                         textArea = new TextArea();
 
@@ -113,7 +114,6 @@ public class Controller {
                         tabPane.getSelectionModel().select(tab);
                         TabController tabController = new TabController();
                         tabController.disableButtons(selectPrevButton, selectNextButton, selectAllButton);
-
                     }
                 }
             }
@@ -128,6 +128,7 @@ public class Controller {
                 textArea = openedTextArea.get(selected);
                 currentFile = openedFiles.get(selected.getText());
                 System.out.println(currentFile.getAbsoluteFile());
+                log.info("File: " + currentFile.getAbsoluteFile() + " was selected.");
             }
         }
     }
@@ -140,7 +141,6 @@ public class Controller {
             int infelicity = index - 3;
             if (infelicity < currentIndex) {
                 textArea.positionCaret(infelicity);
-                System.out.println("I set: " + infelicity);
             }
         }
     }
@@ -153,7 +153,6 @@ public class Controller {
             int infelicity = index - 3;
             if (infelicity > currentIndex) {
                 textArea.positionCaret(infelicity);
-                System.out.println("I set: " + infelicity);
                 break;
             }
         }
@@ -163,6 +162,4 @@ public class Controller {
     public void selectAll() {
         textArea.selectAll();
     }
-
-
 }
