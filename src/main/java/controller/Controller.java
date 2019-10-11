@@ -94,15 +94,7 @@ public class Controller {
                         textArea = new TextArea();
 
                         try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
-                            StringBuilder sb = new StringBuilder();
-                            String line = br.readLine();
-
-                            while (line != null) {
-                                sb.append(line);
-                                sb.append(System.lineSeparator());
-                                line = br.readLine();
-                            }
-                            String everything = sb.toString();
+                            String everything = SearchManager.readFile(br);
                             textArea.appendText(everything);
                         } catch (IOException io) {
                             log.info("Unable to read file");
@@ -136,7 +128,7 @@ public class Controller {
     @FXML
     public void selectPrev() {
         int currentIndex = textArea.getCaretPosition();
-        ArrayList<Integer> list = sm.getEntries2(currentFile);
+        ArrayList<Integer> list = sm.getEntries(currentFile);
         for (Integer index : list) {
             int infelicity = index - 3;
             if (infelicity < currentIndex) {
@@ -148,7 +140,7 @@ public class Controller {
     @FXML
     public void selectNext() {
         int currentIndex = textArea.getCaretPosition();
-        ArrayList<Integer> list = sm.getEntries2(currentFile);
+        ArrayList<Integer> list = sm.getEntries(currentFile);
         for (Integer index : list) {
             int infelicity = index - 3;
             if (infelicity > currentIndex) {

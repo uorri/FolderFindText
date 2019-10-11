@@ -12,8 +12,7 @@ import java.util.HashMap;
 public class SearchManager {
     private InputValidator inputValidator;
     private ArrayList<File> requiredFiles;
-    private HashMap<File, ArrayList<Integer>> newMap = new HashMap<>();
-    private HashMap<File, String> mapMap = new HashMap<>();
+    private HashMap<File, ArrayList<Integer>> entries = new HashMap<>();
 
     public SearchManager(InputValidator inputValidator) {
         this.inputValidator = inputValidator;
@@ -24,19 +23,7 @@ public class SearchManager {
         if (file.isFile()) {
             if (file.getName().endsWith(inputValidator.getFileMask())) {
                 try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
-                    StringBuilder sb = new StringBuilder();
-                    String line = br.readLine();
-
-
-                    while (line != null) {
-                        sb.append(line);
-                        sb.append(System.lineSeparator());
-                        line = br.readLine();
-
-                    }
-                    String everything = sb.toString();
-                    mapMap.put(file, everything);
-
+                    String everything = readFile(br);
                     if (everything.contains(inputValidator.getSearchText())) {
                         requiredFiles.add(file);
                         ArrayList<Integer> arrayList = new ArrayList<>();
@@ -48,15 +35,12 @@ public class SearchManager {
                             arrayList.add(j);
                             j = everything.indexOf(inputValidator.getSearchText(), j + 1);
                         }
-                        newMap.put(file, arrayList);
-
-
+                        entries.put(file, arrayList);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
         } else {
             File[] folderEntries = file.listFiles();
             if (folderEntries != null) {
@@ -66,10 +50,20 @@ public class SearchManager {
             }
         }
         return requiredFiles;
-
     }
 
-    public ArrayList<Integer> getEntries2(File file) {
-        return newMap.get(file);
+    public static String readFile(BufferedReader br) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            sb.append(line);
+            sb.append(System.lineSeparator());
+            line = br.readLine();
+        }
+        return sb.toString();
+    }
+
+    public ArrayList<Integer> getEntries(File file) {
+        return entries.get(file);
     }
 }
