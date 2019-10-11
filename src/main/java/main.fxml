@@ -13,69 +13,72 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <top>
       <StackPane prefHeight="168.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Directory:" StackPane.alignment="TOP_LEFT">
-               <padding>
-                  <Insets left="5.0" top="5.0" />
-               </padding>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label text="File mask:" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="5.0" top="46.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label text="Search text:" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets bottom="1.0" left="5.0" top="86.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" text="log" StackPane.alignment="TOP_RIGHT">
-               <StackPane.margin>
-                  <Insets left="90.0" right="6.0" top="45.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="searchText_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
-               <StackPane.margin>
-                  <Insets left="90.0" right="6.0" top="85.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </TextField>
-            <Button mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="90.0" text="Search" StackPane.alignment="BOTTOM_CENTER">
-               <StackPane.margin>
-                  <Insets bottom="13.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button minHeight="-Infinity" mnemonicParsing="false" onAction="#openFolder" prefHeight="25.0" prefWidth="29.0" text="Button" StackPane.alignment="TOP_RIGHT">
-               <StackPane.margin>
-                  <Insets right="6.0" top="5.0" />
-               </StackPane.margin>
-            </Button>
-            <TextField fx:id="filePath_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0" StackPane.alignment="TOP_RIGHT">
-               <StackPane.margin>
-                  <Insets left="90.0" right="40.0" top="5.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </TextField>
-         </children>
+         <Label text="Directory:" StackPane.alignment="TOP_LEFT">
+            <padding>
+               <Insets left="5.0" top="5.0"/>
+            </padding>
+            <font>
+               <Font size="14.0"/>
+            </font>
+         </Label>
+         <Label text="File mask:" StackPane.alignment="TOP_LEFT">
+            <StackPane.margin>
+               <Insets left="5.0" top="46.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="14.0"/>
+            </font>
+         </Label>
+         <Label text="Search text:" StackPane.alignment="TOP_LEFT">
+            <StackPane.margin>
+               <Insets bottom="1.0" left="5.0" top="86.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="14.0"/>
+            </font>
+         </Label>
+         <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+                    prefWidth="520.0" text="log" StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin>
+               <Insets left="90.0" right="6.0" top="45.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="11.0"/>
+            </font>
+         </TextField>
+         <TextField fx:id="searchText_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+                    prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin>
+               <Insets left="90.0" right="6.0" top="85.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="11.0"/>
+            </font>
+         </TextField>
+         <Button mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="90.0" text="Search"
+                 StackPane.alignment="BOTTOM_CENTER">
+            <StackPane.margin>
+               <Insets bottom="13.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="14.0"/>
+            </font>
+         </Button>
+         <Button minHeight="-Infinity" mnemonicParsing="false" onAction="#openFolder" prefHeight="25.0" prefWidth="29.0"
+                 text="Button" StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin>
+               <Insets right="6.0" top="5.0"/>
+            </StackPane.margin>
+         </Button>
+         <TextField fx:id="filePath_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+                    StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin>
+               <Insets left="90.0" right="40.0" top="5.0"/>
+            </StackPane.margin>
+            <font>
+               <Font size="11.0"/>
+            </font>
+         </TextField>
       </StackPane>
    </top>
    <left>
@@ -83,11 +86,8 @@
    </left>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <top>
-            <TabPane fx:id="tabPane" onMouseClicked="#mouseClickTab" prefHeight="386.0" prefWidth="400.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
-         </top>
          <bottom>
-            <BorderPane prefHeight="46.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="41.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <left>
                   <Button fx:id="selectPrevButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectPrev" prefHeight="26.0" prefWidth="98.0" text="Select prev" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
@@ -110,6 +110,9 @@
                </right>
             </BorderPane>
          </bottom>
+         <center>
+            <TabPane fx:id="tabPane" onMouseClicked="#mouseClickTab" prefHeight="386.0" prefWidth="400.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </center>
 </BorderPane>
