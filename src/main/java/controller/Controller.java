@@ -105,8 +105,7 @@ public class Controller {
                         openedTextArea.put(tab, textArea);
                         tabPane.getTabs().add(tab);
                         tabPane.getSelectionModel().select(tab);
-                        TabController tabController = new TabController();
-                        tabController.disableButtons(selectPrevButton, selectNextButton, selectAllButton);
+                        TabController.activeButtons(selectPrevButton, selectNextButton, selectAllButton);
                     }
                 }
             }
