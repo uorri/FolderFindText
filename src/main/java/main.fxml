@@ -99,7 +99,7 @@
                   <Button fx:id="selectAllButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectAll" prefHeight="26.0" prefWidth="106.0" text="Select all" BorderPane.alignment="CENTER" />
                </center>
                <right>
-                  <Button fx:id="selectNextButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectNext" prefHeight="26.0" prefWidth="97.0" text="Select next" BorderPane.alignment="CENTER">
+                  <Button fx:id="selectNextButton" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#selectNext" prefHeight="32.0" prefWidth="98.0" text="Select next" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets right="2.0" />
                      </padding>
