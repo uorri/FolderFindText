@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -44,12 +45,12 @@ public class Controller {
 
     private TreeController treeController;
     private TextArea textArea;
-    private SearchManager sm;
     private File currentFile;
     private Map<String, File> openedFiles = new HashMap<>();
     private Map<Tab, TextArea> openedTextArea = new HashMap<>();
     private static Logger log = Logger.getLogger(Controller.class.getName());
     private InputValidator inputValidator;
+    private SearchManager searchManager;
 
 
     @FXML
@@ -72,8 +73,8 @@ public class Controller {
             inputValidator.setSearchText(searchText_field);
             inputValidator.setFolder(filePath_field);
             treeController = new TreeController(inputValidator, fileTree);
-            sm = new SearchManager(inputValidator);
-            ArrayList<File> files = sm.search(inputValidator.getFolder());
+            searchManager = new SearchManager(inputValidator);
+            ArrayList<File> files = searchManager.search(inputValidator.getFolder());
             files.forEach(file -> treeController.createTree(file, null));
         } catch (IOException e) {
             log.info(e.getMessage());
@@ -94,7 +95,7 @@ public class Controller {
                         textArea = new TextArea();
 
                         try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
-                            String everything = SearchManager.readFile(br);
+                            String everything = searchManager.readFile(br);
                             textArea.appendText(everything);
                         } catch (IOException io) {
                             log.info("Unable to read file");
@@ -128,11 +129,12 @@ public class Controller {
     @FXML
     public void selectPrev() {
         int currentIndex = textArea.getCaretPosition();
-        ArrayList<Integer> list = sm.getEntries(currentFile);
-        for (Integer index : list) {
-            int infelicity = index - 3;
-            if (infelicity < currentIndex) {
-                textArea.positionCaret(infelicity);
+        String text = textArea.getText();
+        List<Integer> entries = searchManager.getEntries(text);
+
+        for (Integer index : entries) {
+            if (index < currentIndex) {
+                textArea.positionCaret(index);
             }
         }
     }
@@ -140,11 +142,12 @@ public class Controller {
     @FXML
     public void selectNext() {
         int currentIndex = textArea.getCaretPosition();
-        ArrayList<Integer> list = sm.getEntries(currentFile);
-        for (Integer index : list) {
-            int infelicity = index - 3;
-            if (infelicity > currentIndex) {
-                textArea.positionCaret(infelicity);
+        String text = textArea.getText();
+        List<Integer> entries = searchManager.getEntries(text);
+
+        for (Integer index : entries) {
+            if (index > currentIndex) {
+                textArea.positionCaret(index);
                 break;
             }
         }

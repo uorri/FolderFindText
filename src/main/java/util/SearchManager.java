@@ -7,12 +7,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class SearchManager {
     private InputValidator inputValidator;
     private ArrayList<File> requiredFiles;
-    private HashMap<File, ArrayList<Integer>> entries = new HashMap<>();
 
     public SearchManager(InputValidator inputValidator) {
         this.inputValidator = inputValidator;
@@ -24,18 +23,9 @@ public class SearchManager {
             if (file.getName().endsWith(inputValidator.getFileMask())) {
                 try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
                     String everything = readFile(br);
-                    if (everything.contains(inputValidator.getSearchText())) {
+                    String searchText = inputValidator.getSearchText().toLowerCase();
+                    if (everything.contains(searchText)) {
                         requiredFiles.add(file);
-                        ArrayList<Integer> arrayList = new ArrayList<>();
-                        int i = everything.indexOf(inputValidator.getSearchText());
-                        arrayList.add(i);
-                        int j = everything.indexOf(inputValidator.getSearchText(), i + 1);
-
-                        while (!(j == -1)) {
-                            arrayList.add(j);
-                            j = everything.indexOf(inputValidator.getSearchText(), j + 1);
-                        }
-                        entries.put(file, arrayList);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -52,7 +42,7 @@ public class SearchManager {
         return requiredFiles;
     }
 
-    public static String readFile(BufferedReader br) throws IOException {
+    public String readFile(BufferedReader br) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line = br.readLine();
         while (line != null) {
@@ -63,7 +53,18 @@ public class SearchManager {
         return sb.toString();
     }
 
-    public ArrayList<Integer> getEntries(File file) {
-        return entries.get(file);
+    public List<Integer> getEntries(String text) {
+        List<Integer> entries = new ArrayList<>();
+        String searchText = inputValidator.getSearchText().toLowerCase();
+        int i = text.toLowerCase().indexOf(searchText);
+        entries.add(i);
+        int j = text.toLowerCase().indexOf(searchText, i + 1);
+
+        while (!(j == -1)) {
+            entries.add(j);
+            j = text.indexOf(searchText, j + 1);
+        }
+
+        return entries;
     }
 }
