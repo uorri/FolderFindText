@@ -119,7 +119,6 @@ public class Controller {
             if (selected != null) {
                 textArea = openedTextArea.get(selected);
                 currentFile = openedFiles.get(selected.getText());
-                System.out.println(currentFile.getAbsoluteFile());
                 log.info("File: " + currentFile.getAbsoluteFile() + " was selected.");
             }
         }
