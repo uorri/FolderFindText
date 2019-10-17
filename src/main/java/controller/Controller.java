@@ -129,12 +129,7 @@ public class Controller {
         int currentIndex = textArea.getCaretPosition();
         String text = textArea.getText();
         List<Integer> entries = searchManager.getEntries(text);
-
-        for (Integer index : entries) {
-            if (index < currentIndex) {
-                textArea.positionCaret(index);
-            }
-        }
+        entries.stream().filter(x -> x < currentIndex).forEach(x -> textArea.positionCaret(x));
     }
 
     @FXML
