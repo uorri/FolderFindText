@@ -8,38 +8,48 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SearchManager {
     private InputValidator inputValidator;
     private ArrayList<File> requiredFiles;
+    private static Logger log = Logger.getLogger(SearchManager.class.getName());
 
     public SearchManager(InputValidator inputValidator) {
         this.inputValidator = inputValidator;
         requiredFiles = new ArrayList<>();
     }
 
-    public ArrayList<File> search(File file) {
+    public List<File> searchFiles(File file) {
         if (file.isFile()) {
             if (file.getName().endsWith(inputValidator.getFileMask())) {
-                try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
-                    String everything = readFile(br);
-                    String searchText = inputValidator.getSearchText().toLowerCase();
-                    if (everything.contains(searchText)) {
-                        requiredFiles.add(file);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                lookForNeededText(file);
             }
         } else {
-            File[] folderEntries = file.listFiles();
-            if (folderEntries != null) {
-                for (File file1 : folderEntries) {
-                    search(file1);
-                }
-            }
+            recursivelySearchFiles(file);
         }
         return requiredFiles;
+    }
+
+    private void lookForNeededText(File file) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
+            String everything = readFile(br);
+            String searchText = inputValidator.getSearchText().toLowerCase();
+            if (everything.contains(searchText)) {
+                requiredFiles.add(file);
+            }
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+    }
+
+    private void recursivelySearchFiles(File file) {
+        File[] folderEntries = file.listFiles();
+        if (folderEntries != null) {
+            for (File f : folderEntries) {
+                searchFiles(f);
+            }
+        }
     }
 
     public String readFile(BufferedReader br) throws IOException {
@@ -60,7 +70,7 @@ public class SearchManager {
         entries.add(i);
         int j = text.toLowerCase().indexOf(searchText, i + 1);
 
-        while (!(j == -1)) {
+        while (j != -1) {
             entries.add(j);
             j = text.indexOf(searchText, j + 1);
         }

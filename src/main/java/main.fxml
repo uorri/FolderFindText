@@ -37,7 +37,7 @@
                <Font size="14.0"/>
             </font>
          </Label>
-         <TextField fx:id="fileMask_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+         <TextField fx:id="fileMaskField" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
                     prefWidth="520.0" text="log" StackPane.alignment="TOP_RIGHT">
             <StackPane.margin>
                <Insets left="90.0" right="6.0" top="45.0"/>
@@ -46,7 +46,7 @@
                <Font size="11.0"/>
             </font>
          </TextField>
-         <TextField fx:id="searchText_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+         <TextField fx:id="searchTextField" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
                     prefWidth="520.0" StackPane.alignment="TOP_RIGHT">
             <StackPane.margin>
                <Insets left="90.0" right="6.0" top="85.0"/>
@@ -70,7 +70,7 @@
                <Insets right="6.0" top="5.0"/>
             </StackPane.margin>
          </Button>
-         <TextField fx:id="filePath_field" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
+         <TextField fx:id="filePathField" alignment="TOP_LEFT" minHeight="-Infinity" prefHeight="25.0"
                     StackPane.alignment="TOP_RIGHT">
             <StackPane.margin>
                <Insets left="90.0" right="40.0" top="5.0"/>
