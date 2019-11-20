@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +19,13 @@ import java.util.logging.Logger;
 public class Controller {
 
     @FXML
-    private TextField fileMask_field;
+    private TextField fileMaskField;
 
     @FXML
-    private TextField searchText_field;
+    private TextField searchTextField;
 
     @FXML
-    private TextField filePath_field;
+    private TextField filePathField;
 
     @FXML
     private TreeView<String> fileTree;
@@ -57,24 +56,24 @@ public class Controller {
     void openFolder() {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Chose file folder");
-        File currentFolder = new File(filePath_field.getText());
+        File currentFolder = new File(filePathField.getText());
         if (currentFolder.exists())
             chooser.setInitialDirectory(currentFolder);
         File newFolder = chooser.showDialog(null);
         if (newFolder != null)
-            filePath_field.setText(newFolder.toString());
+            filePathField.setText(newFolder.toString());
     }
 
     @FXML
     void search() {
         inputValidator = new InputValidator();
         try {
-            inputValidator.setFileMask(fileMask_field);
-            inputValidator.setSearchText(searchText_field);
-            inputValidator.setFolder(filePath_field);
+            inputValidator.setFileMask(fileMaskField);
+            inputValidator.setSearchText(searchTextField);
+            inputValidator.setFolder(filePathField);
             treeController = new TreeController(inputValidator, fileTree);
             searchManager = new SearchManager(inputValidator);
-            ArrayList<File> files = searchManager.search(inputValidator.getFolder());
+            List<File> files = searchManager.searchFiles(inputValidator.getFolder());
             files.forEach(file -> treeController.createTree(file, null));
         } catch (IOException e) {
             log.info(e.getMessage());
@@ -85,28 +84,26 @@ public class Controller {
     public void mouseClick(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             TreeItem<String> item = fileTree.getSelectionModel().getSelectedItem();
-            if (item != null) {
-                if (!item.getValue().equals(inputValidator.getFolder().getName())) {
-                    currentFile = treeController.getFile(item);
-                    if (currentFile != null && currentFile.isFile()) {
-                        openedFiles.put(currentFile.getName(), currentFile);
-                        log.info("File: " + currentFile.getAbsoluteFile() + " was opened.");
-                        final Tab tab = new Tab(item.getValue());
-                        textArea = new TextArea();
+            if (item != null && !item.getValue().equals(inputValidator.getFolder().getName())) {
+                currentFile = treeController.getFile(item);
+                if (currentFile != null && currentFile.isFile()) {
+                    openedFiles.put(currentFile.getName(), currentFile);
+                    log.info("File: " + currentFile.getAbsoluteFile() + " was opened.");
+                    final Tab tab = new Tab(item.getValue());
+                    textArea = new TextArea();
 
-                        try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
-                            String everything = searchManager.readFile(br);
-                            textArea.appendText(everything);
-                        } catch (IOException io) {
-                            log.info("Unable to read file");
-                        }
-
-                        tab.setContent(textArea);
-                        openedTextArea.put(tab, textArea);
-                        tabPane.getTabs().add(tab);
-                        tabPane.getSelectionModel().select(tab);
-                        TabController.activeButtons(selectPrevButton, selectNextButton, selectAllButton);
+                    try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
+                        String everything = searchManager.readFile(br);
+                        textArea.appendText(everything);
+                    } catch (IOException io) {
+                        log.info("Unable to read file");
                     }
+
+                    tab.setContent(textArea);
+                    openedTextArea.put(tab, textArea);
+                    tabPane.getTabs().add(tab);
+                    tabPane.getSelectionModel().select(tab);
+                    TabController.activeButtons(selectPrevButton, selectNextButton, selectAllButton);
                 }
             }
         }
