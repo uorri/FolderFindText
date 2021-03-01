@@ -7,7 +7,7 @@
 
 ## Getting Started
 
-- To run this Project use **[Main.java](/src/Main.java)**.
+- To run this Project use **[Main.java](FolderFindText/src/Main.java)**.
 
 
 ## Requirements
