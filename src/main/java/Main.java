@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,10 +11,9 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle("Folder find text");
         primaryStage.setScene(new Scene(root));
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("png/ico.png")));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/png/ico.png")));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);
