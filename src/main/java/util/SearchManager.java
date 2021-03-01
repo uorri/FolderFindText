@@ -2,65 +2,53 @@ package util;
 
 import model.InputValidator;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SearchManager {
-    private InputValidator inputValidator;
-    private ArrayList<File> requiredFiles;
-    private static Logger log = Logger.getLogger(SearchManager.class.getName());
+    private final InputValidator inputValidator;
+    private static final Logger log = Logger.getLogger(SearchManager.class.getName());
 
     public SearchManager(InputValidator inputValidator) {
         this.inputValidator = inputValidator;
-        requiredFiles = new ArrayList<>();
     }
 
     public List<File> searchFiles(File file) {
-        if (file.isFile()) {
-            if (file.getName().endsWith(inputValidator.getFileMask())) {
-                lookForNeededText(file);
-            }
-        } else {
-            recursivelySearchFiles(file);
-        }
-        return requiredFiles;
-    }
-
-    private void lookForNeededText(File file) {
-        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
-            String everything = readFile(br);
-            String searchText = inputValidator.getSearchText().toLowerCase();
-            if (everything.contains(searchText)) {
-                requiredFiles.add(file);
-            }
+        final String extension = inputValidator.getFileMask();
+        List<File> requiredFiles = null;
+        try (Stream<Path> walk = Files.walk(file.toPath())) {
+            requiredFiles = walk
+                    .filter(Files::isRegularFile)
+                    .filter(f -> f.toString().endsWith("." + extension))
+                    .map(Path::toFile)
+                    .filter(f -> searchNeededText(readFile(f)))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             log.info(e.getMessage());
         }
+
+        return requiredFiles;
     }
 
-    private void recursivelySearchFiles(File file) {
-        File[] folderEntries = file.listFiles();
-        if (folderEntries != null) {
-            for (File f : folderEntries) {
-                searchFiles(f);
-            }
-        }
-    }
+    public String readFile(File file) {
+        String content = "";
 
-    public String readFile(BufferedReader br) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line);
-            sb.append(System.lineSeparator());
-            line = br.readLine();
+        try (Stream<String> lines = Files.lines(file.toPath(), Charset.defaultCharset())) {
+            content = lines
+                    .collect(Collectors.joining(System.lineSeparator()));
+        } catch (IOException e) {
+            log.info(e.getMessage());
         }
-        return sb.toString();
+
+        return content;
     }
 
     public List<Integer> getEntries(String text) {
@@ -76,5 +64,9 @@ public class SearchManager {
         }
 
         return entries;
+    }
+
+    private boolean searchNeededText(String content) {
+        return content.contains(inputValidator.getSearchText().toLowerCase());
     }
 }
