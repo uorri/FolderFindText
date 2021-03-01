@@ -9,9 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 class TreeController {
-    private Map<TreeItem<String>, File> files = new HashMap<>();
-    private Map<File, TreeItem<String>> folders = new HashMap<>();
-
+    private final Map<TreeItem<String>, File> files = new HashMap<>();
+    private final Map<File, TreeItem<String>> folders = new HashMap<>();
 
     TreeController(InputValidator inputValidator, TreeView<String> fileTree) {
         TreeItem<String> root = new TreeItem<>(inputValidator.getFolder().getName());
@@ -19,24 +18,27 @@ class TreeController {
         folders.put(inputValidator.getFolder(), fileTree.getRoot());
     }
 
-    void createTree(File file, TreeItem<String> childItem){
+    public void createTree(File file, TreeItem<String> childItem) {
         TreeItem<String> currentItem = new TreeItem<>(file.getName());
         TreeItem<String> parentItem;
         File parentFile = file.getParentFile();
-        if (childItem != null){
+        if (childItem != null) {
             currentItem.getChildren().add(childItem);
         }
-        if (folders.containsKey(parentFile)){
+        if (folders.containsKey(parentFile)) {
             parentItem = folders.get(parentFile);
             parentItem.getChildren().add(currentItem);
         } else {
             createTree(parentFile, currentItem);
         }
-        if (file.isFile()) files.put(currentItem, file);
-        else folders.put(file, currentItem);
+        if (file.isFile()) {
+            files.put(currentItem, file);
+        } else {
+            folders.put(file, currentItem);
+        }
     }
 
-    File getFile(TreeItem<String> item) {
+    public File getFile(TreeItem<String> item) {
         return files.get(item);
     }
 }
