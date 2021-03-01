@@ -15,7 +15,6 @@ public class InputValidator {
             throw new IOException("Filemask is wrong!");
         else
             this.fileMask = fileMask.getText();
-
     }
 
     public String getFileMask() {
@@ -34,11 +33,11 @@ public class InputValidator {
     }
 
     public void setFolder(TextField filePath) throws IOException {
-        File folder = new File(filePath.getText());
-        if (!folder.isDirectory() || (!folder.exists()))
+        File tFolder = new File(filePath.getText());
+        if (!tFolder.isDirectory() || (!tFolder.exists()))
             throw new IOException("Filepath is wrong!");
         else
-            this.folder = folder;
+            this.folder = tFolder;
     }
 
     public File getFolder() {
