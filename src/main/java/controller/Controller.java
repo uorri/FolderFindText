@@ -7,13 +7,12 @@ import javafx.stage.DirectoryChooser;
 import model.InputValidator;
 import util.SearchManager;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class Controller {
@@ -45,9 +44,9 @@ public class Controller {
     private TreeController treeController;
     private TextArea textArea;
     private File currentFile;
-    private Map<String, File> openedFiles = new HashMap<>();
-    private Map<Tab, TextArea> openedTextArea = new HashMap<>();
-    private static Logger log = Logger.getLogger(Controller.class.getName());
+    private final Map<String, File> openedFiles = new HashMap<>();
+    private final Map<Tab, TextArea> openedTextArea = new HashMap<>();
+    private static final Logger log = Logger.getLogger(Controller.class.getName());
     private InputValidator inputValidator;
     private SearchManager searchManager;
 
@@ -55,13 +54,15 @@ public class Controller {
     @FXML
     void openFolder() {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Chose file folder");
+        chooser.setTitle("Choose file folder");
         File currentFolder = new File(filePathField.getText());
-        if (currentFolder.exists())
+        if (currentFolder.exists()) {
             chooser.setInitialDirectory(currentFolder);
+        }
         File newFolder = chooser.showDialog(null);
-        if (newFolder != null)
+        if (newFolder != null) {
             filePathField.setText(newFolder.toString());
+        }
     }
 
     @FXML
@@ -71,13 +72,13 @@ public class Controller {
             inputValidator.setFileMask(fileMaskField);
             inputValidator.setSearchText(searchTextField);
             inputValidator.setFolder(filePathField);
-            treeController = new TreeController(inputValidator, fileTree);
-            searchManager = new SearchManager(inputValidator);
-            List<File> files = searchManager.searchFiles(inputValidator.getFolder());
-            files.forEach(file -> treeController.createTree(file, null));
         } catch (IOException e) {
             log.info(e.getMessage());
         }
+        treeController = new TreeController(inputValidator, fileTree);
+        searchManager = new SearchManager(inputValidator);
+        List<File> files = searchManager.searchFiles(inputValidator.getFolder());
+        files.forEach(file -> treeController.createTree(file, null));
     }
 
     @FXML
@@ -89,21 +90,7 @@ public class Controller {
                 if (currentFile != null && currentFile.isFile()) {
                     openedFiles.put(currentFile.getName(), currentFile);
                     log.info("File: " + currentFile.getAbsoluteFile() + " was opened.");
-                    final Tab tab = new Tab(item.getValue());
-                    textArea = new TextArea();
-
-                    try (BufferedReader br = new BufferedReader(new FileReader(currentFile.getAbsoluteFile()))) {
-                        String everything = searchManager.readFile(br);
-                        textArea.appendText(everything);
-                    } catch (IOException io) {
-                        log.info("Unable to read file");
-                    }
-
-                    tab.setContent(textArea);
-                    openedTextArea.put(tab, textArea);
-                    tabPane.getTabs().add(tab);
-                    tabPane.getSelectionModel().select(tab);
-                    TabController.activeButtons(selectPrevButton, selectNextButton, selectAllButton);
+                    displayFileContent(item);
                 }
             }
         }
@@ -135,16 +122,28 @@ public class Controller {
         String text = textArea.getText();
         List<Integer> entries = searchManager.getEntries(text);
 
-        for (Integer index : entries) {
-            if (index > currentIndex) {
-                textArea.positionCaret(index);
-                break;
-            }
-        }
+        Optional<Integer> first = entries.stream().filter(x -> x > currentIndex).findFirst();
+        first.ifPresent(i -> textArea.positionCaret(i));
     }
 
     @FXML
     public void selectAll() {
         textArea.selectAll();
+    }
+
+    private void displayFileContent(TreeItem<String> item) {
+        final Tab tab = new Tab(item.getValue());
+        textArea = new TextArea();
+        appendText();
+        tab.setContent(textArea);
+        openedTextArea.put(tab, textArea);
+        tabPane.getTabs().add(tab);
+        tabPane.getSelectionModel().select(tab);
+        TabController.activeButtons(selectPrevButton, selectNextButton, selectAllButton);
+    }
+
+    private void appendText() {
+        String everything = searchManager.readFile(currentFile);
+        textArea.appendText(everything);
     }
 }
