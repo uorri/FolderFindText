@@ -11,4 +11,4 @@
 
 
 ## Requirements
-* Java +8
+* Java < 9
