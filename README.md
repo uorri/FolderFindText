@@ -1,4 +1,4 @@
-# FolderFindText - JavaFX
+# Folder find text - JavaFX
 
 <div align="center">
 <img src="screenshots/screen.png">
